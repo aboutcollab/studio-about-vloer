@@ -151,7 +151,8 @@ canvas.overcart{cursor:move} canvas.grabbing{cursor:grabbing}
   <div class="seg" role="group" aria-label="The lights under the deck" id="underseg">
     <span class="gl">Under</span>
     <button type="button" data-u="off">Off</button>
-    <button type="button" data-u="white" class="on">White</button>
+    <button type="button" data-u="warm" class="on">Warm</button>
+    <button type="button" data-u="white">White</button>
     <button type="button" data-u="disco">Disco</button>
   </div>
   <div class="seg" role="group" aria-label="The high ceiling, each element on or off" id="ceilseg">
@@ -160,7 +161,6 @@ canvas.overcart{cursor:move} canvas.grabbing{cursor:grabbing}
     <button type="button" data-c="work" class="on">Studio light</button>
     <button type="button" data-c="lamps" class="on">Round lamps</button>
     <button type="button" data-c="strips" class="on">LED strips</button>
-    <button type="button" data-c="fabrics" class="on">Fabrics</button>
     <button type="button" data-c="mirrors" class="on">Mirrors</button>
     <button type="button" data-c="ball" class="on">Disco ball</button>
   </div>
@@ -170,9 +170,9 @@ canvas.overcart{cursor:move} canvas.grabbing{cursor:grabbing}
 
 <div class="lightp" id="lightp" hidden>
   <div class="lrow" id="lall"><span>All lights</span><button type="button" data-all="on">On</button><button type="button" data-all="off">Off</button><button type="button" data-all="party">Party</button><button type="button" data-all="uv">Black light</button></div>
-  <div class="lrow" data-g="strips"><span>Sky fabrics</span><button type="button" data-v="off">Off</button><button type="button" data-v="warm">Warm</button><button type="button" data-v="blue">Blue</button><button type="button" data-v="pink">Pink</button><button type="button" data-v="disco">Disco</button><button type="button" data-v="uv">Black light</button></div>
+  <div class="lrow" data-g="strips"><span>LED strips (sky)</span><button type="button" data-v="off">Off</button><button type="button" data-v="warm">Warm</button><button type="button" data-v="blue">Blue</button><button type="button" data-v="pink">Pink</button><button type="button" data-v="disco">Disco</button><button type="button" data-v="uv">Black light</button></div>
   <div class="lrow" data-g="suns"><span>Round lamps</span><button type="button" data-v="off">Off</button><button type="button" data-v="warm">Warm</button><button type="button" data-v="white">White</button><button type="button" data-v="blue">Blue</button><button type="button" data-v="pink">Pink</button><button type="button" data-v="disco">Disco</button></div>
-  <div class="lrow" data-g="panels"><span>Under the deck</span><button type="button" data-v="off">Off</button><button type="button" data-v="orange">Orange</button><button type="button" data-v="white">White</button><button type="button" data-v="disco">Disco</button></div>
+  <div class="lrow" data-g="panels"><span>Under the deck</span><button type="button" data-v="off">Off</button><button type="button" data-v="warm">Warm</button><button type="button" data-v="orange">Orange</button><button type="button" data-v="white">White</button><button type="button" data-v="disco">Disco</button></div>
 </div>
 
 <div class="more" id="more" hidden>
@@ -321,7 +321,7 @@ const POSTS = [ [ .06, .06 ], [ 4, .06 ], [ 8, .06 ], [ 12, .06 ], [ 16, .06 ], 
 
 const BEAMS = [ [ .06, .06, XO, .06 ], [ .06, SD, 16, SD ], [ EDGE - .05, BACK - .06, XO, BACK - .06 ], [ .06, .06, .06, SD ], [ 4, .06, 4, SD ], [ 8, .06, 8, SD ], [ 12, .06, 12, SD ], [ 16, .06, 16, BACK - .06 ], [ XO, .06, XO, BACK - .06 ], [ 8, SD, 8, BACK - .06 ], [ 12, SD, 12, BACK - .06 ], [ EDGE - .05, BACK - .06, EDGE - .05, ZW - .06 ] ];
 
-const CURTAINS = [ [ EDGE - .05, BACK - .06, XO, BACK - .06, "g" ], [ EDGE - .05, BACK - .06, EDGE - .05, ZW - .06, "g", [ [ 9.2, 11.25 ] ] ], [ 4, .06, 4, SD, "s" ], [ 8, .06, 8, SD, "s" ], [ 12, .06, 12, SD, "s" ], [ 16, .06, 16, SD, "s" ], [ .06, SD, 16, SD, "s", [ [ 1.4, 2.6 ], [ 5.4, 6.6 ], [ 9.4, 10.6 ], [ 13.4, 14.6 ] ] ], [ 16, SD, 16, BACK - .06, "s" ] ];
+const CURTAINS = [ [ EDGE - .05, BACK - .06, XO, BACK - .06, "g" ], [ EDGE - .05, BACK - .06, EDGE - .05, ZW - .06, "g" ], [ 4, .06, 4, SD, "s" ], [ 8, .06, 8, SD, "s" ], [ 12, .06, 12, SD, "s" ], [ 16, .06, 16, SD, "s" ], [ .06, SD, 16, SD, "s", [ [ 1.4, 2.6 ], [ 5.4, 6.6 ], [ 9.4, 10.6 ], [ 13.4, 14.6 ] ] ], [ 16, SD, 16, BACK - .06, "s" ] ];
 
 const GREENS = {
     deep: [ "#2c4a32", "#365a3d" ],
@@ -1128,6 +1128,8 @@ label([ 16.8, 7.2, ZW - .1 ], "Circles and lamps", "front wall B", {
     };
     rail(EDGE, BACK, EDGE, ZW);
     rail(EDGE, BACK, CAB.x0, BACK);
+    B(g, EDGE + .03, DECK_TOP - .02, BACK, EDGE + .05, DECK_TOP + RAIL_H, ZW - .02, M.ply);
+    for (let z = BACK + 1.2; z < ZW - .3; z += 1.2) B(g, EDGE + .05, DECK_TOP, z - .01, EDGE + .056, DECK_TOP + RAIL_H - .02, z + .01, M.joint);
     minus([ HOLE[0], EDGE ], [ ARRIVE ]).forEach(s => rail(s[0], BACK, s[1], BACK));
     rail(HOLE[0], HOLE[3], EDGE, HOLE[3]);
     rail(HOLE[0], BACK, HOLE[0], HOLE[3]);
@@ -1227,7 +1229,7 @@ CURTAINS.forEach(([x0, z0, x1, z1, k, gaps]) => curtain(G.curtUp, x0, z0, x1, z1
     }
     B(g, 4.05, y + th, 10.55, 4.5, y + th + .07, 11, mat("#2b2f33"));
     potPlant("kitchen", 4.3, y + th, 9.4, .12, true);
-    label([ 4.3, y + 1.7, 10.2 ], "Long table", "to look down on the hall: technique, the artists' reception", {
+    label([ 4.3, y + 1.7, 10.2 ], "Long table", "behind a wooden rail and the curtain; open it to look down on a show", {
         lv: "up",
         cls: "hand",
         c: "#a8793f"
@@ -1759,20 +1761,19 @@ function applyPreset(k) {
 const LIGHT = {
     strips: "warm",
     suns: "warm",
-    panels: "white"
+    panels: "warm"
 };
 
 const CEIL = {
     work: true,
     lamps: true,
     strips: false,
-    fabrics: false,
     mirrors: true,
     ball: true
 };
 
 const COL = {
-    warm: 16752704,
+    warm: 16758858,
     white: 16774370,
     blue: 5217791,
     pink: 16736168,
@@ -1785,8 +1786,7 @@ const hsl = (h, s, l) => (new THREE.Color).setHSL((h % 1 + 1) % 1, s, l);
 
 function setLights(now) {
     const t = (now || performance.now()) / 1e3, beat = Math.floor(t * 2), skyOn = true;
-    const st = CEIL.strips && CEIL.fabrics ? LIGHT.strips : "off", su = CEIL.lamps ? LIGHT.suns : "off", pa = LIGHT.panels, work = CEIL.work;
-    FABG.visible = CEIL.fabrics;
+    const st = CEIL.strips ? LIGHT.strips : "off", su = CEIL.lamps ? LIGHT.suns : "off", pa = LIGHT.panels, work = CEIL.work;
     MIRG.visible = CEIL.mirrors;
     G.ball.visible = CEIL.ball;
     WORKM.color.set(work ? 16775136 : 7828332);
@@ -1839,8 +1839,8 @@ function allLights(k) {
     if (k === "on") {
         Object.assign(LIGHT, {
             strips: "warm",
-            suns: "white",
-            panels: "white"
+            suns: "warm",
+            panels: "warm"
         });
         Object.assign(CEIL, {
             work: true,
@@ -1863,8 +1863,7 @@ function allLights(k) {
         Object.assign(CEIL, {
             work: false,
             lamps: true,
-            strips: true,
-            fabrics: true
+            strips: true
         });
     } else {
         Object.assign(LIGHT, {
@@ -1874,8 +1873,7 @@ function allLights(k) {
         Object.assign(CEIL, {
             work: false,
             lamps: false,
-            strips: true,
-            fabrics: true
+            strips: true
         });
     }
     setLights();
@@ -1953,7 +1951,7 @@ function placeLabels() {
     const show = document.getElementById("sh-lbl").checked, dims = document.getElementById("sh-dm").checked, w = innerWidth, h = innerHeight;
     const cand = [];
     LBL.forEach((L, i) => {
-        let ok = L.lv === "dim" ? dims : show && (L.lv === "all" || L.lv === "up" && LEVEL !== "down" || L.lv === "gi" && LEVEL !== "up" || L.lv === "sky" && (CEIL.fabrics || CEIL.mirrors) || L.lv === "fab" && CEIL.fabrics || L.lv === "ball" && CEIL.ball || L.lv === "work" || L.lv === FW || L.lv === "cart" && LEVEL !== "up");
+        let ok = L.lv === "dim" ? dims : show && (L.lv === "all" || L.lv === "up" && LEVEL !== "down" || L.lv === "gi" && LEVEL !== "up" || L.lv === "sky" && CEIL.mirrors || L.lv === "fab" || L.lv === "ball" && CEIL.ball || L.lv === "work" || L.lv === FW || L.lv === "cart" && LEVEL !== "up");
         if (ok) {
             if (L.cart) tmp.set(L.cart.x, L.p[1], L.cart.z); else tmp.set(...L.p);
             if (L.lv === "up") tmp.y += UPG.position.y;
@@ -2152,10 +2150,7 @@ document.querySelectorAll(".lrow[data-g]").forEach(r => r.addEventListener("clic
     if (!b) return;
     const g = r.dataset.g, v = b.dataset.v;
     LIGHT[g] = v;
-    if (g === "strips") {
-        CEIL.strips = v !== "off";
-        if (v !== "off") CEIL.fabrics = true;
-    }
+    if (g === "strips") CEIL.strips = v !== "off";
     if (g === "suns") CEIL.lamps = v !== "off";
     setLights();
     updateMirrors(true);
