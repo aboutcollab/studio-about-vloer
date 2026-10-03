@@ -177,7 +177,7 @@ canvas.overcart{cursor:move} canvas.grabbing{cursor:grabbing}
 
 <div class="more" id="more" hidden>
   <p class="hint">Drag to turn, scroll to zoom, right-drag to move. Drag a bar cart to move it; it clips onto the next one or onto a cabinet's display top. R or Turn turns it.</p>
-  <label><input type="checkbox" id="sh-lbl" checked> Labels</label>
+  <label><input type="checkbox" id="sh-lbl"> Labels</label>
   <label><input type="checkbox" id="sh-dm"> Dimensions</label>
   <label><input type="checkbox" id="sh-fans"> Fans (the fabrics move)</label>
   <label><input type="checkbox" id="sh-cur" checked> Curtains upstairs</label>
@@ -782,9 +782,9 @@ let POTN = () => Object.values(PLANTS).reduce((t, p) => t + p.pots.length, 0);
     label([ 2, 1.4, 3.6 ], "Wood & Build", "≈ 32 m², its wall in line with the landing", {
         lv: "gi"
     });
-    B(g, EDGE - .04, 0, 10.05, EDGE + .04, 2.7, ZW, M.slide);
-    B(g, EDGE - .06, 2.7, 10, EDGE + .06, 2.78, ZW, M.track);
-    label([ EDGE + .1, 2.95, 10.9 ], "Sliding door", "closes the entrance lobby, 1.7 m", {
+    B(g, EDGE - .04, 0, 10.05, EDGE + .04, UNDER - .08, ZW, M.slide);
+    B(g, EDGE - .06, UNDER - .08, 10, EDGE + .06, UNDER - .01, ZW, M.track);
+    label([ EDGE + .1, 2.95, 10.9 ], "Sliding door", "closes the entrance lobby, 1.7 m, up to the deck", {
         lv: "gi",
         cls: "sm"
     });
@@ -1579,10 +1579,10 @@ const CART_DEF = {
 
 const PRESETS = {
     wall: {
-        A: [ 6, 10.25, 2 ],
+        A: [ 6.5, 10.75, 3 ],
         C: [ 8.5, 10.25, 2 ],
         B: [ 11, 10.25, 2 ],
-        D: [ 5.5, 11.25, 1 ]
+        D: [ 7.5, 11.25, 2 ]
     },
     line: {
         A: [ 7, 8.1, 0 ],
@@ -2297,6 +2297,8 @@ if (Q.get("fw") === "B") {
 }
 
 if (Q.get("lights")) allLights(Q.get("lights"));
+
+if (Q.get("labels") === "1") document.getElementById("sh-lbl").checked = true;
 
 applyView();
 
