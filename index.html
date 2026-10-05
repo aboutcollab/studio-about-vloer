@@ -315,13 +315,13 @@ const CAB = {
     ladder: BACK + 1
 };
 
-const PH = 2.85, PW = .09, XO = HX - .62;
+const PH = 2.77, PW = .09, XO = HX - .62;
 
 const POSTS = [ [ .06, .06 ], [ 4, .06 ], [ 8, .06 ], [ 12, .06 ], [ 16, .06 ], [ XO, .06 ], [ .06, SD ], [ 4, SD ], [ 8, SD ], [ 12, SD ], [ 16, SD ], [ EDGE - .05, BACK - .06 ], [ 8, BACK - .06 ], [ 12, BACK - .06 ], [ 16, BACK - .06 ], [ XO, BACK - .06 ], [ EDGE - .05, 8.75 ], [ EDGE - .05, ZW - .06 ] ];
 
 const BEAMS = [ [ .06, .06, XO, .06 ], [ .06, SD, 16, SD ], [ EDGE - .05, BACK - .06, XO, BACK - .06 ], [ .06, .06, .06, SD ], [ 4, .06, 4, SD ], [ 8, .06, 8, SD ], [ 12, .06, 12, SD ], [ 16, .06, 16, BACK - .06 ], [ XO, .06, XO, BACK - .06 ], [ 8, SD, 8, BACK - .06 ], [ 12, SD, 12, BACK - .06 ], [ EDGE - .05, BACK - .06, EDGE - .05, ZW - .06 ] ];
 
-const CURTAINS = [ [ EDGE - .05, BACK - .06, XO, BACK - .06, "g" ], [ EDGE - .05, BACK - .06, EDGE - .05, ZW - .06, "g" ], [ 4, .06, 4, SD, "s" ], [ 8, .06, 8, SD, "s" ], [ 12, .06, 12, SD, "s" ], [ 16, .06, 16, SD, "s" ], [ .06, SD, 16, SD, "s", [ [ 1.4, 2.6 ], [ 5.4, 6.6 ], [ 9.4, 10.6 ], [ 13.4, 14.6 ] ] ], [ 16, SD, 16, BACK - .06, "s" ] ];
+const CURTAINS = [ [ EDGE - .05, BACK - .06, XO, BACK - .06, "g" ], [ EDGE - .05, BACK - .06, EDGE - .05, 8.75, "g" ], [ EDGE - .05, 8.75, EDGE - .05, ZW - .06, "g", null, DECK_TOP + RAIL_H ], [ 4, .06, 4, SD, "s" ], [ 8, .06, 8, SD, "s" ], [ 12, .06, 12, SD, "s" ], [ 16, .06, 16, SD, "s" ], [ .06, SD, 16, SD, "s", [ [ 1.4, 2.6 ], [ 5.4, 6.6 ], [ 9.4, 10.6 ], [ 13.4, 14.6 ] ] ], [ 16, SD, 16, BACK - .06, "s" ] ];
 
 const GREENS = {
     deep: [ "#2c4a32", "#365a3d" ],
@@ -1188,9 +1188,9 @@ label([ 10, DECK_TOP + PH + .3, SD ], "Wooden posts and beams", "all round the d
     c: "#a8793f"
 });
 
-const CT = DECK_TOP + PH - .14, CBm = DECK_TOP + .02;
+const CDROP = 2.6, CBm = DECK_TOP + .015, CT = CBm + CDROP;
 
-CURTAINS.forEach(([x0, z0, x1, z1, k, gaps]) => curtain(G.curtUp, x0, z0, x1, z1, CBm, CT, k === "g" ? M.green[1] : M.sand, gaps));
+CURTAINS.forEach(([x0, z0, x1, z1, k, gaps, bottom]) => curtain(G.curtUp, x0, z0, x1, z1, bottom || CBm, CT, k === "g" ? M.green[1] : M.sand, gaps));
 
 {
     const g = G.kitchen, y = DECK_TOP;
