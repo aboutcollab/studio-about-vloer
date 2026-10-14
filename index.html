@@ -213,7 +213,7 @@ const Q = new URLSearchParams(location.search);
 
 if (Q.get("ui") === "0") document.body.classList.add("noui");
 
-const HX = 20.24, ZW = 11.75, RH = 8;
+const HX = 20.24, ZW = 11.75, RH = 6.7;
 
 const DECK_TOP = 4, UNDER = 3.61, RAIL_H = 1.1;
 
@@ -314,7 +314,7 @@ const CAB = {
     ladder: BACK + 1
 };
 
-const PH = 2.77, PW = .09, XO = HX - .06;
+const PH = RH - DECK_TOP, PW = .09, XO = HX - .06;
 
 const POSTS = [ [ .06, .06 ], [ 4, .06 ], [ 8, .06 ], [ 12, .06 ], [ 16, .06 ], [ XO, .06 ], [ .06, SD ], [ 4, SD ], [ 8, SD ], [ 12, SD ], [ 16, SD ], [ EDGE - .05, BACK - .06 ], [ 8, BACK - .06 ], [ 12, BACK - .06 ], [ 16, BACK - .06 ], [ XO, BACK - .06 ], [ EDGE - .05, 8.75 ], [ EDGE - .05, ZW - .06 ] ];
 
@@ -330,7 +330,7 @@ const GREENS = {
 
 const SAND = "#cdb88f";
 
-const NL = 15, NP = 6, LINE_Y = 7.6, Z0L = 5.95, Z1L = 11.6, LX0 = 5.35, LX1 = 19.4;
+const NL = 15, NP = 6, LINE_Y = RH - .4, Z0L = 5.95, Z1L = 11.6, LX0 = 5.35, LX1 = 19.4;
 
 const lineX = i => LX0 + i * (LX1 - LX0) / (NL - 1);
 
@@ -916,7 +916,7 @@ const UNDERFAB = [], PANELS = [];
     for (let y = .25; y < DECK_TOP - .3; y += .3) B(G.ladderDown, xc - .22, y, z0 + .3, xc - .15, y + .03, z1 - .3, mat("#c9ced1"));
 }
 
-const WALL_A = [ [ 5.6, 2.3 ], [ 6.6, 3.2 ], [ 7.6, 2.2, "lamp" ], [ 5.7, 4.4 ], [ 7.3, 4.6 ], [ 6.4, 5.5 ], [ 8.1, 3.4 ], [ 14.3, 2.9 ], [ 15.6, 3.8, "lamp" ], [ 16.9, 2.6 ], [ 18.2, 3.5 ], [ 19.1, 2.3 ], [ 14.6, 5 ], [ 16.2, 5.6, "lamp" ], [ 17.6, 4.7 ], [ 18.8, 5.9 ], [ 15.2, 6.6 ], [ 9.6, 6, "lamp" ], [ 11.9, 6.1 ], [ 5.8, 6.6 ] ];
+const WALL_A = [ [ 5.6, 2.3 ], [ 6.6, 3.2 ], [ 7.6, 2.2, "lamp" ], [ 5.7, 4.4 ], [ 7.3, 4.6 ], [ 6.4, 5.5 ], [ 8.1, 3.4 ], [ 14.3, 2.9 ], [ 15.6, 3.8, "lamp" ], [ 16.9, 2.6 ], [ 18.2, 3.5 ], [ 19.1, 2.3 ], [ 14.6, 5 ], [ 16.2, 5.6, "lamp" ], [ 17.6, 4.7 ], [ 18.8, 5.9 ], [ 15.2, 6.05 ], [ 9.6, 6, "lamp" ], [ 11.9, 6.1 ], [ 5.8, 6.05 ] ];
 
 function magnetShelf(g, key, x, y, what) {
     const Z = ZW - .01;
@@ -968,13 +968,13 @@ WALL_A.forEach(s => magnetShelf(G.fwA, "fwA", s[0], s[1], s[2]));
     B(G.fwA, a + .05, 1, ZW - .05, b - .05, 1.75, ZW - .04, M.poster);
 });
 
-label([ 16.8, 7, ZW - .1 ], "Magnet shelves", "front wall A", {
+label([ 16.8, 6.35, ZW - .1 ], "Magnet shelves", "front wall A", {
     lv: "A",
     cls: "hand",
     c: "#c4561d"
 });
 
-const DISCS = [ [ 5.9, 3.6, .62, "#e8823c" ], [ 7.4, 4.6, .45, "#7457cf" ], [ 15, 3.1, .5, "#9a9a96" ], [ 17.6, 4.8, .72, "#3fb0a0" ], [ 16, 6.6, .5, "#e8823c" ], [ 10.4, 6.4, .42, "#3fb0a0" ] ];
+const DISCS = [ [ 5.9, 3.6, .62, "#e8823c" ], [ 7.4, 4.6, .45, "#7457cf" ], [ 15, 3.1, .5, "#9a9a96" ], [ 17.6, 4.8, .72, "#3fb0a0" ], [ 16, 5.95, .5, "#e8823c" ], [ 10.4, 5.95, .42, "#3fb0a0" ] ];
 
 DISCS.forEach(([x, y, r, c]) => {
     disc(G.fwB, r + .03, x, y, ZW - .03, mat(shade(c, .72)), "-z");
@@ -999,12 +999,12 @@ DISCS.forEach(([x, y, r, c]) => {
     G.fwB.add(s);
 });
 
-[ [ 5.3, 5.6 ], [ 8.1, 6.2 ], [ 15.3, 5.2 ], [ 18.6, 6.6 ], [ 14.1, 2.7 ], [ 19, 4 ] ].forEach(([x, y]) => {
+[ [ 5.3, 5.6 ], [ 8.1, 5.9 ], [ 15.3, 5.2 ], [ 18.6, 6 ], [ 14.1, 2.7 ], [ 19, 4 ] ].forEach(([x, y]) => {
     magnetShelf(G.fwB, "fwB", x, y);
     for (let i = 0; i < 4; i++) plantInto("fwB").blooms.push([ x + (rnd() - .5) * .24, y + .3 + rnd() * .18, ZW - .11, .075, choose([ "#a57be0", "#f2c94c", "#e0443e" ]) ]);
 });
 
-label([ 16.8, 7.2, ZW - .1 ], "Circles and lamps", "front wall B", {
+label([ 16.8, 6.45, ZW - .1 ], "Circles and lamps", "front wall B", {
     lv: "B",
     cls: "hand",
     c: "#3fb0a0"
@@ -1494,13 +1494,13 @@ BEAMS.forEach(([x0, z0, x1, z1]) => {
     if (along) B(G.frame, Math.min(x0, x1), DECK_TOP + PH - .12, z0 - .035, Math.max(x0, x1), DECK_TOP + PH, z0 + .035, M.timber); else B(G.frame, x0 - .035, DECK_TOP + PH - .12, Math.min(z0, z1), x0 + .035, DECK_TOP + PH, Math.max(z0, z1), M.timber);
 });
 
-label([ 10, DECK_TOP + PH + .3, SD ], "Wooden posts and beams", "all round the deck; the curtains hang from them", {
+label([ 10, DECK_TOP + PH - .3, SD ], "Wooden posts and beams", "all round the deck, up to the ceiling; the curtains hang from them", {
     lv: "up",
     cls: "hand",
     c: "#a8793f"
 });
 
-const CDROP = 2.6, CBm = DECK_TOP + .015, CT = CBm + CDROP;
+const CBm = DECK_TOP + .015, CT = DECK_TOP + PH - .12 - .02, CDROP = CT - CBm;
 
 CURTAINS.forEach(([x0, z0, x1, z1, k, gaps, bottom]) => curtain(G.curtUp, x0, z0, x1, z1, bottom || CBm, CT, k === "g" ? M.green[1] : M.sand, gaps));
 
@@ -1611,7 +1611,7 @@ const cubeRT = new THREE.WebGLCubeRenderTarget(256, {
 
 const cubeCam = new THREE.CubeCamera(.1, 60, cubeRT);
 
-cubeCam.position.set(12.6, 6.9, 8.9);
+cubeCam.position.set(12.6, RH - 1.1, 8.9);
 
 scene.add(cubeCam);
 
@@ -1775,7 +1775,7 @@ G.sky.add(FABG, MIRG);
         G.sky.add(hook);
     });
     const [bx, bz] = [ CLUSTERS[1][0] + .45, CLUSTERS[1][1] + .1 ];
-    rod(G.ball, [ bx, RH - .14, bz ], [ bx, 6.45, bz ], .006, M.cable);
+    rod(G.ball, [ bx, RH - .14, bz ], [ bx, RH - 1.05, bz ], .006, M.cable);
     const ball = new THREE.Mesh(new THREE.IcosahedronGeometry(.27, 3), new THREE.MeshStandardMaterial({
         color: 16777215,
         metalness: 1,
@@ -1783,7 +1783,7 @@ G.sky.add(FABG, MIRG);
         envMap: cubeRT.texture,
         flatShading: true
     }));
-    ball.position.set(bx, 6.2, bz);
+    ball.position.set(bx, RH - 1.3, bz);
     G.ball.add(ball);
     G.ball.userData.ball = ball;
     label([ lineX(3), LINE_Y - .5, Z1L - .7 ], "Sky ceiling", "15 lines × 6 fabrics, no lights on them", {
@@ -2227,7 +2227,7 @@ function updateMirrors(force) {
 
 const NOTES = [];
 
-[ [ [ 0, .05, ZW + .9 ], [ HX, .05, ZW + .9 ], "20.24 m" ], [ [ HX + .9, .05, 0 ], [ HX + .9, .05, ZW ], "11.75 m" ], [ [ -.9, 0, ZW ], [ -.9, RH, ZW ], "8 m high" ], [ [ HX + .7, 0, BACK ], [ HX + .7, UNDER, BACK ], "3.61 m clear" ], [ [ HX + .7, DECK_TOP, BACK ], [ HX + .7, RH, BACK ], "4.00 m above the deck" ] ].forEach(([a, b, t]) => {
+[ [ [ 0, .05, ZW + .9 ], [ HX, .05, ZW + .9 ], "20.24 m" ], [ [ HX + .9, .05, 0 ], [ HX + .9, .05, ZW ], "11.75 m" ], [ [ -.9, 0, ZW ], [ -.9, RH, ZW ], RH.toFixed(2) + " m high" ], [ [ HX + .7, 0, BACK ], [ HX + .7, UNDER, BACK ], "3.61 m clear" ], [ [ HX + .7, DECK_TOP, BACK ], [ HX + .7, RH, BACK ], (RH - DECK_TOP).toFixed(2) + " m above the deck" ] ].forEach(([a, b, t]) => {
     const geo = (new THREE.BufferGeometry).setFromPoints([ new THREE.Vector3(...a), new THREE.Vector3(...b) ]);
     G.dims.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
         color: 2785144
@@ -2313,7 +2313,7 @@ const VIEWS = {
     },
     sky: {
         p: [ 15.4, 1.65, 11.2 ],
-        t: [ 11.6, 7.4, 7.6 ]
+        t: [ 11.6, RH - .5, 7.6 ]
     },
     front: {
         p: [ 10.8, 3.4, .6 ],
@@ -2347,12 +2347,12 @@ const VIEWS = {
         level: "down"
     },
     deck: {
-        p: [ 10.2, 6.5, 11.4 ],
-        t: [ 5, 4.8, 5 ],
+        p: [ 10.2, 5.6, 11.4 ],
+        t: [ 5, 4.6, 5 ],
         level: "both"
     },
     kitchen: {
-        p: [ 9.2, 6.2, 11 ],
+        p: [ 9.2, 5.6, 11 ],
         t: [ 2.2, 4.5, 8.9 ],
         level: "both"
     }
