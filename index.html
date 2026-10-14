@@ -2,6 +2,13 @@
 <html lang="en">
 <title>Studio About vloer</title>
 <meta charset="utf-8">
+<meta name="description" content="A 3D model of Studio About's new studio hall: four studios on a deck, OSB cabinets with oak, a bar on wheels and a sky ceiling. Opens in any browser, no login.">
+<meta property="og:title" content="Studio About vloer">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aboutcollab.github.io/studio-about-vloer/">
+<meta property="og:description" content="A 3D model of Studio About's new studio hall. Drag to turn, scroll to zoom.">
+<meta property="og:image" content="https://aboutcollab.github.io/studio-about-vloer/views/overview.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,10 +96,17 @@ canvas.overcart{cursor:move} canvas.grabbing{cursor:grabbing}
 .lbl.sm{padding:2px 7px} .lbl.sm b{font-size:12px}
 .noui .top,.noui .dock,.noui .more,.noui .lightp,.noui .cartpop{display:none!important}
 .clean .dock > :not(#opt-btn),.clean .more,.clean .lightp,.clean .brand p{display:none!important}
-.fail{position:fixed;left:16px;right:16px;top:50%;transform:translateY(-50%);z-index:40;max-width:460px;margin:0 auto;background:var(--panel);
-  border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);font-size:14px;line-height:1.5}
-.fail b{display:block;font-size:16px;margin-bottom:4px}
-.fail code{display:block;margin-top:8px;font-family:var(--font-num);font-size:12px;color:var(--ink-2);word-break:break-word}
+.nogl{position:fixed;inset:0;z-index:60;overflow-y:auto;background:var(--paper);padding:calc(18px + env(safe-area-inset-top,0px)) 16px 40px}
+.nogl h1{margin:0 auto 6px;max-width:1100px;font-size:24px;font-weight:700;letter-spacing:-.015em}
+.nogl h1 span{font-family:var(--font-hand);font-size:32px;color:var(--orange);margin-left:3px}
+.nogl .why{margin:0 auto 18px;max-width:1100px;font-size:14px;line-height:1.5;color:var(--ink-2)}
+.nogl .why b{color:var(--ink)} .nogl code{display:block;margin-top:4px;font-family:var(--font-num);font-size:11px;word-break:break-word}
+.nogl .shots{display:grid;grid-template-columns:1fr;gap:16px;max-width:1100px;margin:0 auto}
+@media (min-width:900px){ .nogl .shots{grid-template-columns:1fr 1fr} }
+.nogl figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.nogl img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;background:var(--line)}
+.nogl figcaption{padding:9px 12px 11px;font-size:13px;line-height:1.4;color:var(--ink-2)}
+.nogl-on .top,.nogl-on .dock,.nogl-on .more,.nogl-on .lightp,.nogl-on .cartpop,.nogl-on #c,.nogl-on #labels{display:none!important}
 @media (max-width:900px){
   .top{flex-direction:column;align-items:stretch;gap:8px} .brand{max-width:none;padding:8px 12px 9px} .brand p{display:none}
   .views{margin-left:0;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;max-width:100%}
@@ -195,11 +209,24 @@ canvas.overcart{cursor:move} canvas.grabbing{cursor:grabbing}
   <div class="notes" id="notes" hidden></div>
 </div>
 <div id="labels"></div>
-<div class="fail" id="fail" role="alert" hidden></div>
+
+<section class="nogl" id="nogl" hidden aria-label="Views of the model">
+  <h1>Studio About <span>vloer</span></h1>
+  <p class="why"><b>This browser cannot show the 3D model.</b> These are its main views. In another browser, or with graphics acceleration switched on in this one, the model turns, zooms and switches.<code id="nogl-why"></code></p>
+  <div class="shots">
+    <figure><img src="views/overview.jpg" alt="The whole hall: four studios and the community kitchen on the deck, the sky ceiling, downstairs the OSB cabinets and the bar" loading="lazy" onerror="this.parentNode.remove()"><figcaption>The whole hall: four studios and the community kitchen on the deck, the sky ceiling, downstairs the OSB cabinets and the bar</figcaption></figure>
+    <figure><img src="views/back.jpg" alt="The back cabinet between the two corner closets: oak pieces on the doors, oak squares on the top, mirrors above" loading="lazy" onerror="this.parentNode.remove()"><figcaption>The back cabinet between the two corner closets: oak pieces on the doors, oak squares on the top, mirrors above</figcaption></figure>
+    <figure><img src="views/side.jpg" alt="The side cabinet with stepped tops; it turns the corner with a low counter" loading="lazy" onerror="this.parentNode.remove()"><figcaption>The side cabinet with stepped tops; it turns the corner with a low counter</figcaption></figure>
+    <figure><img src="views/closets.jpg" alt="The corner closets from above, their pivot doors open, racks inside" loading="lazy" onerror="this.parentNode.remove()"><figcaption>The corner closets from above, their pivot doors open, racks inside</figcaption></figure>
+    <figure><img src="views/bar.jpg" alt="The bar: three carts in OSB that join into one table, and the tall fridge housing" loading="lazy" onerror="this.parentNode.remove()"><figcaption>The bar: three carts in OSB that join into one table, and the tall fridge housing</figcaption></figure>
+    <figure><img src="views/sky.jpg" alt="Under the sky ceiling: fabrics on lines, mirror clouds with round lamps, a disco ball" loading="lazy" onerror="this.parentNode.remove()"><figcaption>Under the sky ceiling: fabrics on lines, mirror clouds with round lamps, a disco ball</figcaption></figure>
+    <figure><img src="views/deck.jpg" alt="The deck edge: the planters on their consoles, the green curtains up to the ceiling" loading="lazy" onerror="this.parentNode.remove()"><figcaption>The deck edge: the planters on their consoles, the green curtains up to the ceiling</figcaption></figure>
+    <figure><img src="views/under.jpg" alt="Under the deck: the green ceiling with its LED panels over the back cabinet" loading="lazy" onerror="this.parentNode.remove()"><figcaption>Under the deck: the green ceiling with its LED panels over the back cabinet</figcaption></figure>
+  </div>
+</section>
 <script>
-window.showFail = function(why){ var f = document.getElementById('fail'); if(!f || !f.hidden) return;
-  f.innerHTML = '<b>The 3D model cannot start in this browser</b>Try another browser (Chrome, Safari or Firefox), or switch on hardware acceleration in its settings. If that does not help, send a screenshot of this message.<code></code>';
-  f.querySelector('code').textContent = why || ''; f.hidden = false; };
+window.showFail = function(why){ var n = document.getElementById('nogl'); if(!n || !n.hidden) return;
+  document.getElementById('nogl-why').textContent = why || ''; n.hidden = false; document.body.classList.add('nogl-on'); };
 window.addEventListener('error', function(e){ var t = e.target;
   if(t && t.tagName === 'SCRIPT') return showFail('could not load ' + t.src);
   if(e.message) showFail(e.message + (e.filename ? ' (' + e.filename.split('/').pop() + ':' + e.lineno + ')' : '')); }, true);
