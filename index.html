@@ -154,6 +154,11 @@ canvas.overcart{cursor:move} canvas.grabbing{cursor:grabbing}
     <button type="button" data-bar="island">Island</button>
     <button type="button" data-bar="two">Two</button>
   </div>
+  <div class="seg" role="group" aria-label="The studios' walls upstairs" id="studioseg">
+    <span class="gl">Studios</span>
+    <button type="button" data-st="panels" class="on">OSB panels</button>
+    <button type="button" data-st="curtains">Curtains</button>
+  </div>
   <div class="seg" role="group" aria-label="The pivot doors of the corner closets" id="doorseg">
     <span class="gl">Doors</span>
     <button type="button" data-dl="oak" class="on">Oak squares</button>
@@ -208,7 +213,7 @@ canvas.overcart{cursor:move} canvas.grabbing{cursor:grabbing}
   <label><input type="checkbox" id="sh-fl"> Fire ladder rolled down</label>
   <label><input type="checkbox" id="sh-see"> See-through deck</label>
   <label><input type="checkbox" id="sh-box" checked> Wooden box round the stair</label>
-  <label><input type="checkbox" id="sh-cd"> Closet doors open</label>
+  <label><input type="checkbox" id="sh-cd"> Doors open (closets and studios)</label>
   <label><input type="checkbox" id="sh-plt" checked> Planters at the deck edge</label>
   <label><input type="checkbox" id="sh-rk" checked> Racks in the corner closets</label>
   <label><input type="checkbox" id="sh-ppl"> People (1.80 m)</label>
@@ -749,13 +754,13 @@ const POTS = [ "#b5653f", "#e6e2da", "#8e8a84", "#c98b5e" ], LEAVES = [ "#4f8a45
 
 const G = {};
 
-[ "shell", "struct", "ground", "up", "curtUp", "frame", "kitchen", "sky", "ball", "fwA", "fwB", "proj", "ladderUp", "ladderDown", "under", "carts", "people", "dims", "stairbox", "racks", "plt" ].forEach(k => {
+[ "shell", "struct", "ground", "up", "curtUp", "curtSand", "panels", "frame", "kitchen", "sky", "ball", "fwA", "fwB", "proj", "ladderUp", "ladderDown", "under", "carts", "people", "dims", "stairbox", "racks", "plt" ].forEach(k => {
     G[k] = new THREE.Group;
 });
 
 const UPG = new THREE.Group;
 
-[ G.up, G.curtUp, G.frame, G.kitchen, G.plt ].forEach(g => UPG.add(g));
+[ G.up, G.curtUp, G.curtSand, G.panels, G.frame, G.kitchen, G.plt ].forEach(g => UPG.add(g));
 
 scene.add(UPG);
 
@@ -1610,7 +1615,62 @@ label([ 10, DECK_TOP + PH - .3, SD ], "Wooden posts and beams", "all round the d
 
 const CBm = DECK_TOP + .015, CT = DECK_TOP + PH - .12 - .02, CDROP = CT - CBm;
 
-CURTAINS.forEach(([x0, z0, x1, z1, k, gaps, bottom]) => curtain(G.curtUp, x0, z0, x1, z1, bottom || CBm, CT, k === "g" ? M.green[1] : M.sand, gaps));
+CURTAINS.forEach(([x0, z0, x1, z1, k, gaps, bottom]) => curtain(k === "g" ? G.curtUp : G.curtSand, x0, z0, x1, z1, bottom || CBm, CT, k === "g" ? M.green[1] : M.sand, gaps));
+
+let PART = Q.get("studios") === "curtains" ? "curtains" : "panels";
+
+const SLIDERS = [];
+
+{
+    const g = G.panels, T = .1, y0 = DECK_TOP + .015, y1 = DECK_TOP + PH - .12 - .015, strip = mat("#b78d56", {
+        roughness: .65
+    }), P = .045;
+    const run = (x0, z0, x1, z1) => {
+        const alongX = Math.abs(z1 - z0) < 1e-6, a = alongX ? x0 : z0, b = alongX ? x1 : z1, L = b - a, n = Math.max(1, Math.round(L / 1.22)), w = L / n;
+        for (let i = 0; i < n; i++) {
+            const p = a + i * w, q = p + w - .006;
+            if (alongX) B(g, p, y0, z0 - T / 2, q, y1, z0 + T / 2, osbFor(w, y1 - y0)); else B(g, x0 - T / 2, y0, p, x0 + T / 2, y1, q, osbFor(w, y1 - y0));
+            if (i) [ -1, 1 ].forEach(sd => {
+                const f = (alongX ? z0 : x0) + sd * T / 2, f2 = f + sd * .012;
+                if (alongX) B(g, p - .025, y0, f, p + .025, y1, f2, strip); else B(g, f, y0, p - .025, f2, y1, p + .025, strip);
+            });
+        }
+    };
+    [ 4, 8, 12, 16 ].forEach(x => run(x, .06 + P, x, SD - P));
+    const gaps = [ [ 1.4, 2.6 ], [ 5.4, 6.6 ], [ 9.4, 10.6 ], [ 13.4, 14.6 ] ];
+    minus([ .06 + P, 16 - P ], gaps).forEach(([a, b]) => run(a, SD, b, SD));
+    gaps.forEach(([a, b]) => {
+        const d = new THREE.Group, zd = SD - T / 2 - .035;
+        d.position.set((a + b) / 2, 0, zd);
+        g.add(d);
+        B(d, -(b - a) / 2 - .05, y0 + .01, -.02, (b - a) / 2 + .05, y1 - .06, .02, osbFor(1.3, y1 - y0));
+        B(d, (b - a) / 2 - .12, y0 + .95, -.035, (b - a) / 2 - .09, y0 + 1.35, .035, M.castor);
+        B(g, a - 1.4, y1 - .05, zd - .025, b + .1, y1, zd + .025, M.track);
+        SLIDERS.push({
+            d: d,
+            at: (a + b) / 2,
+            by: -(b - a + .05),
+            ax: "x"
+        });
+    });
+    {
+        const z0 = SD + P, z1 = BACK - .06 - P, d = new THREE.Group, xd = 16 + T / 2 + .035;
+        d.position.set(xd, 0, (z0 + z1) / 2);
+        g.add(d);
+        B(d, -.02, y0 + .01, -(z1 - z0) / 2 - .04, .02, y1 - .06, (z1 - z0) / 2 + .04, osbFor(1, y1 - y0));
+        B(g, xd - .025, y1 - .05, z0 - 1, xd + .025, y1, z1 + .05, M.track);
+        SLIDERS.push({
+            d: d,
+            at: (z0 + z1) / 2,
+            by: -(z1 - z0 + .05),
+            ax: "z"
+        });
+    }
+    label([ 10, DECK_TOP + 1.6, SD - .3 ], "OSB panels", "movable: 9 mm, wool, 9 mm; a sliding door per studio", {
+        lv: "up",
+        cls: "sm"
+    });
+}
 
 {
     const g = G.kitchen, y = DECK_TOP;
@@ -2557,6 +2617,13 @@ function applyView() {
     FWVIS.B = G.fwB.visible && FW === "B";
     FWVIS.P = G.proj.visible && v("sh-pj");
     G.curtUp.visible = v("sh-cur");
+    G.curtSand.visible = v("sh-cur") && PART === "curtains";
+    G.panels.visible = PART === "panels";
+    SLIDERS.forEach(q => {
+        const o = v("sh-cd") ? q.by : 0;
+        if (q.ax === "x") q.d.position.x = q.at + o; else q.d.position.z = q.at + o;
+    });
+    document.querySelectorAll("#studioseg button").forEach(b => b.classList.toggle("on", b.dataset.st === PART));
     G.ladderUp.visible = G.ladderUp.visible && !v("sh-fl");
     G.ladderDown.visible = G.ladderDown.visible && v("sh-fl");
     G.dims.visible = v("sh-dm");
@@ -2612,6 +2679,11 @@ click("#doorseg", b => {
     DOORLOOK = b.dataset.dl;
     applyView();
     updateMirrors(true);
+});
+
+click("#studioseg", b => {
+    PART = b.dataset.st;
+    applyView();
 });
 
 click("#lall", b => allLights(b.dataset.all));
